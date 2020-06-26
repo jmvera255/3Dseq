@@ -2,10 +2,10 @@
 %%% a particular sequence occurs in the input fasta variable. 
 %%% Copyright (c) 2019 Frank J. Poelwijk, poelwijk@gmail.com. 
 
-function [fastaunique, multiplseq] = FuncFastaUnique(fastaraw)
+function [fastaunique, multiplseq] = FuncFastaUnique(fastaraw, np)
 
 tempcell=cell(size(fastaraw,1),1);
-for i=1:size(fastaraw,1)
+parfor i=1:size(fastaraw,1)
     tempcell{i}=fastaraw(i).Sequence;
 end
 
