@@ -36,14 +36,20 @@ num_lines=size(DNAseqs,1);
 quality=zeros(num_lines,maxlinewidth);
 fid=fopen(Qscorename,'r');
 for i=1:num_lines
-    dummy=fgets(fid);
-    dummy(dummy==9|dummy==10|dummy==13)=[];
-    if length(dummy)<=maxlinewidth
-        dummy=[dummy 33*ones(1,maxlinewidth-length(dummy))];
+%%% read Qscores one line at a time
+    line_in=fgets(fid);
+    display(ischar(line_in));
+    display(line_in);
+    line_in(line_in==9|line_in==10|line_in==13)=[];
+    if length(line_in)<=maxlinewidth
+        line_in=[line_in 33*ones(1,maxlinewidth-length(line_in))];
+	display(line_in);
+	
     else
-        dummy=dummy(1:maxlinewidth);
+        line_in=line_in(1:maxlinewidth);
     end
-    quality(i,:)=dummy;
+    quality(i,:)=line_in;
+    display(quality);
     if mod(i,5000)==0
         disp(['Analyzed ',num2str(i),' reads.']);
     end
@@ -124,7 +130,7 @@ seqsDNA=fastaread(filename);
 toc;
 
 disp('Determining unique sequences');
-tic;
+%tic;
 for i=1:size(seqsDNA,1)
     seqsDNA(i).Header=['s',num2str(i)];
 end
@@ -139,9 +145,9 @@ seqsDNA=seqsDNA(keepseqs);
 
 Nseq=size(seqsDNA,1);
 
-tic
+tic;
 [seqsDNAunique, multiplseq] = FuncFastaUnique(seqsDNA, np);
-toc
+toc;
 
 %Nsequnique=size(seqsDNAunique,1);
 %
